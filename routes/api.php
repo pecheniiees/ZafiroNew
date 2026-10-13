@@ -11,6 +11,14 @@ Route::post('/clubs/resolve', ClubInstallationController::class)
     ->middleware('throttle:10,1')
     ->name('api.clubs.resolve');
 
+Route::get('/me', [AuthController::class, 'summary'])
+    ->middleware(['auth:sanctum', 'current-club', 'subscription'])
+    ->name('api.me');
+
+Route::post('/agent/user/login', [AuthController::class, 'agentUserLogin'])
+    ->middleware('throttle:5,1')
+    ->name('api.agent.user.login');
+
 Route::prefix('auth')->name('api.auth.')->group(function () {
     Route::post('/login', [AuthController::class, 'login'])
         ->middleware('throttle:5,1')
